@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 
@@ -10,6 +11,7 @@ public:
 	size_t count() const;
 	void push(T const &);
 	T pop();
+	~stack();
 private:
 	T * array_;
 	size_t array_size_;
@@ -18,6 +20,11 @@ private:
 
 template <typename T>
 stack<T>::stack() : array_(nullptr), array_size_(0), count_(0){};
+
+template <typename T> 
+stack<T>::~stack(){
+	delete[] array_;
+}
 
 template <typename T>
 size_t stack<T>::count() const{ return count_; }
@@ -44,6 +51,7 @@ else { count_--; array_size_ = count_*sizeof(T);
 	   delete[] array_;
 	   array_ = new T[count_];
 	   for (int i = 0; i < count_; i++) array_[i] = p[i];
+	   delete[] p;
 	   return x;
 	}
 }

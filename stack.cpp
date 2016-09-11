@@ -7,18 +7,36 @@ class stack
 {
 public:
 	stack();
+	stack(const stack<T>&);
 	size_t count() const;
 	void push(T const &);
 	T pop();
 	~stack();
+	stack<T>& operator=(const stack<T>&);
 private:
 	T * array_;
 	size_t array_size_;
 	size_t count_;
 };
 
+template<typename T>
+stack<T>& stack<T>::operator=(const stack<T>& b){
+	if (this != &b){
+		swap(b.array_size_,array_size_);
+		swap(b.count_, count_);
+		swap(b.array_, array_);
+		return *this;
+	}
+}
+
 template <typename T>
 stack<T>::stack() : array_(nullptr), array_size_(0), count_(0){};
+
+template <typename T>
+stack<T>::stack(const stack<T>& x) : array_size_(x.array_size_), count_(x.count_){
+	array_ = new T[array_size_];
+	for (int i = 0; i < count_; i++) array_[i] = x.array_[i];
+}
 
 template <typename T> 
 stack<T>::~stack(){

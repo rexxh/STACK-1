@@ -42,7 +42,7 @@ void stack<T>::push(T const &a){
 		array_size_ *= 2;
 		}
 	array_[count_] = a;
-	count_+=1;
+	count_++;
 	}
 }
 
@@ -50,7 +50,7 @@ template <typename T>
 T stack<T>::pop(){
 	if (count_ == 0) throw("stack pust");
 	else {
-		count_-=1;
+		count_--;
 		return array_[count_];
 	}
 }

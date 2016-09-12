@@ -23,7 +23,7 @@ SCENARIO("pop", "[pop]"){
   REQUIRE(s.pop()==1);
 }
 
-SCENARIO("=", "[=]"){
+SCENARIO("prisv", "[prisv]"){
   stack<int> s;
   s.push(1);
   stack<int> s2;

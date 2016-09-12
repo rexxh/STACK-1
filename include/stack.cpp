@@ -1,3 +1,6 @@
+#ifndef stack_cpp
+#define stack_cpp
+#pragma once
 #include <iostream>
 using namespace std;
 
@@ -74,3 +77,4 @@ T stack<T>::pop(){
 	}
 }
 
+#endif

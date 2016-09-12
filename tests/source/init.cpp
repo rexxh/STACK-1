@@ -8,3 +8,27 @@ SCENARIO("count", "[count]"){
   s.push(1);
   REQUIRE(s.count()==1);
 }
+
+SCENARIO("push", "[push]"){
+  stack<int> s;
+  s.push(1);
+  REQUIRE(s.count()==1);
+  REQUIRE(s.pop()==1);
+}
+
+SCENARIO("pop", "[pop]"){
+  stack<int> s;
+  s.push(1);
+  REQUIRE(s.count()==1);
+  REQUIRE(s.pop()==1);
+}
+
+SCENARIO("=", "[=]"){
+  stack<int> s;
+  s.push(1);
+  stack<int> s2;
+  s2=s;
+  REQUIRE(s.count()==1);
+  REQUIRE(s.pop()==1);
+}
+

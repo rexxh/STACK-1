@@ -5,6 +5,6 @@ using namespace std;
 
 SCENARIO("count", "[count]"){
   stack<int> s;
-  s.push(1)
+  s.push(1);
   REQUIRE(s.count()==1);
 }

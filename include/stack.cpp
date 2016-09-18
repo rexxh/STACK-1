@@ -82,4 +82,4 @@ T* stack<T>::copy_mas(const T *p1, size_t c, size_t s){
 	return p2;
 }
 
-#endif
+#endif 

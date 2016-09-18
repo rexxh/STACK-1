@@ -11,7 +11,7 @@ public:
 	stack();
 	stack(const stack&);
 	~stack();
-	size_t count();
+	size_t count() const;
 	void push(T const &);
 	T pop();
 	stack& operator=(const stack&);
@@ -36,7 +36,7 @@ stack<T>::~stack(){
 }
 
 template <typename T>
-size_t stack<T>::count() { return count_; }
+size_t stack<T>::count()const { return count_; }
 
 template <typename T>
 void stack<T>::push(T const &a){

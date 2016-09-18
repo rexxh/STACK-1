@@ -40,20 +40,14 @@ size_t stack<T>::count()const { return count_; }
 
 template <typename T>
 void stack<T>::push(T const &a){
-	if (array_ == nullptr){
-		array_ = new T[1]; array_[0] = a;
-		count_++; array_size_++;
+	if (count_ == array_size_){
+		T *p = array_;
+		array_ = copy_mas(p, count_, array_size_ * 2+(count_==0));
+		if(p!=nullptr) delete[]p;
+		array_size_ =array_size_*2+(count_==0);
 	}
-	else{
-		if (count_ == array_size_){
-			T *p = array_;
-			array_ = copy_mas(p, count_, array_size_*2);
-			delete[]p;
-			array_size_ *= 2;
-		}
-		array_[count_] = a;
-		count_++;
-	}
+	array_[count_] = a;
+	count_++;
 }
 
 template <typename T>

@@ -62,7 +62,7 @@ T stack<T>::pop(){
 		--count_;
 		return array_[count_];
 	}
-	throw"";
+	throw("stack pust");
 }
 
 template<typename T>

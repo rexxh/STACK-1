@@ -13,7 +13,7 @@ SCENARIO("push", "[push]"){
   stack<int> s;
   s.push(1);
   REQUIRE(s.count()==1);
-  REQUIRE(s.pop()==1);
+  REQUIRE(s.top()==1);
 }
 
 SCENARIO("pop", "[pop]"){

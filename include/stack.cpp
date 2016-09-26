@@ -13,8 +13,8 @@ public:
 	~stack(); /* noexcept */
 	size_t count() const; /* noexcept */
 	void push(T const &); /* strong */
-	//const T& top(); /* strong */
-	T pop(); /* strong */
+	const T& top(); /* strong */
+	void pop(); /* strong */
 	stack& operator=(const stack&); /* strong */
 	//bool empty(); /* noexcept */
 private:
@@ -62,15 +62,15 @@ void stack<T>::push(T const &a){
 	++count_;
 }
 
-/*template <typename T>
+template <typename T>
 const T& stack<T>::top(){
 	if (count_ > 0) return array_[--count_];
 	else throw("stack pust");
-}*/
+}
 
 template <typename T>
 T stack<T>::pop(){
-	if (count_> 0) {--count_; return array_[count_];}
+	if (count_> 0) {--count_;}
 	else throw("stack pust");
 }
 

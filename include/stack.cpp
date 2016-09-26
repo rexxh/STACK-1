@@ -69,7 +69,7 @@ const T& stack<T>::top(){
 }*/
 
 template <typename T>
-void stack<T>::pop(){
+T stack<T>::pop(){
 	if (count_> 0) {--count_; return[count_];}
 	else throw("stack pust");
 }

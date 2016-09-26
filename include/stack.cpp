@@ -87,6 +87,6 @@ stack<T>& stack<T>::operator=(const stack& b){
 }
 
 template<typename T>
-bool stack<T>::empty(){ return(count_ == 0); }
+bool stack<T>::empty(){ return(count_ == 0); } 
 
 #endif

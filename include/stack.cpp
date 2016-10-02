@@ -13,10 +13,10 @@ public:
 	~stack(); /* noexcept */
 	size_t count() const; /* noexcept */
 	void push(T const &); /* strong */
-	//const T& top(); /* strong */
-	T pop(); /* basic */
+	const T& top(); /* strong */
+	void pop(); /* strong */
 	stack& operator=(const stack&); /* strong */
-	//bool empty(); /* noexcept */
+//	bool empty(); /* noexcept */
 private:
 	T * array_;
 	size_t array_size_;
@@ -36,8 +36,8 @@ stack<T>::stack() : array_(nullptr), array_size_(0), count_(0){};
 
 template <typename T>
 stack<T>::stack(const stack& x) : array_size_(x.array_size_),
-	count_(x.count_),
-	array_(copy_mas(x.array_, x.count_, x.array_size_)){};
+count_(x.count_),
+array_(copy_mas(x.array_, x.count_, x.array_size_)){};
 
 template <typename T>
 stack<T>::~stack(){
@@ -59,15 +59,15 @@ void stack<T>::push(T const &a){
 	++count_;
 }
 
-/*template <typename T>
+template <typename T>
 const T& stack<T>::top(){
 	if (count_ > 0) return array_[--count_];
 	else throw("stack pust");
-}*/
+}
 
 template <typename T>
-T stack<T>::pop(){
-	if (count_> 0) {--count_; return array_[count_];}
+void stack<T>::pop(){
+	if (count_> 0) --count_;
 	else throw("stack pust");
 }
 
@@ -80,7 +80,7 @@ stack<T>& stack<T>::operator=(const stack& b){
 		count_ = b.count_;
 		array_size_ = b.array_size_;
 	}
-	return *this; 
+	return *this;
 }
 
 //template<typename T>

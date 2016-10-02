@@ -80,7 +80,7 @@ stack<T>& stack<T>::operator=(const stack& b){
 		count_ = b.count_;
 		array_size_ = b.array_size_;
 	}
-	return *this;
+	return *this; 
 }
 
 //template<typename T>

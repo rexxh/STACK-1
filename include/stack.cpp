@@ -18,7 +18,7 @@ public:
 	stack& operator=(const stack&); /* strong */
 //	bool empty(); /* noexcept */
 private:
-	T * array_;
+	T * array_; 
 	size_t array_size_;
 	size_t count_;
 };

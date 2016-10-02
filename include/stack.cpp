@@ -13,10 +13,10 @@ public:
 	~stack(); /* noexcept */
 	size_t count() const; /* noexcept */
 	void push(T const &); /* strong */
-	const T& top(); /* strong */
-	void pop(); /* strong */
+	//const T& top(); /* strong */
+	T pop(); /* basic */
 	stack& operator=(const stack&); /* strong */
-	bool empty(); /* noexcept */
+	//bool empty(); /* noexcept */
 private:
 	T * array_;
 	size_t array_size_;
@@ -25,13 +25,10 @@ private:
 
 template<typename T>
 T* copy_mas(const T *p1, size_t c, size_t s){
-	if (s >= c){
-		T *p2 = new T[s];
-		try{ copy(p1, p1 + c, p2); }
-		catch (...){ delete[] p2; throw("error in copy"); }
-		return p2;
-	}
-	else throw("size < count");
+	T *p2 = new T[s];
+	try{ copy(p1, p1 + c, p2); }
+	catch (...){ delete[] p2; throw; }
+	return p2;
 }
 
 template <typename T>
@@ -62,15 +59,15 @@ void stack<T>::push(T const &a){
 	++count_;
 }
 
-template <typename T>
+/*template <typename T>
 const T& stack<T>::top(){
 	if (count_ > 0) return array_[--count_];
 	else throw("stack pust");
-}
+}*/
 
 template <typename T>
-void stack<T>::pop(){
-	if (count_> 0) {--count_;}
+T stack<T>::pop(){
+	if (count_> 0) {--count_; return array_[count_];}
 	else throw("stack pust");
 }
 
@@ -86,7 +83,7 @@ stack<T>& stack<T>::operator=(const stack& b){
 	return *this;
 }
 
-template<typename T>
-bool stack<T>::empty(){ return(count_ == 0); } 
+//template<typename T>
+//bool stack<T>::empty(){ return(count_ == 0); }
 
 #endif

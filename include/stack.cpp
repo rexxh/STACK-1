@@ -16,7 +16,7 @@ public:
 	const T& top(); /* strong */
 	void pop(); /* strong */
 	stack& operator=(const stack&); /* strong */
-	bool empty(); /* noexcept */
+//	bool empty(); /* noexcept */
 private:
 	T * array_; 
 	size_t array_size_;
@@ -61,7 +61,7 @@ void stack<T>::push(T const &a){
 
 template <typename T>
 const T& stack<T>::top(){
-	if (count_ > 0) return array_[--count_];
+	if (count_ > 0) return array_[count_-1];
 	else throw("stack pust");
 }
 
@@ -83,7 +83,7 @@ stack<T>& stack<T>::operator=(const stack& b){
 	return *this;
 }
 
-template<typename T>
-bool stack<T>::empty(){ return(count_ == 0); }
+//template<typename T>
+//bool stack<T>::empty(){ return(count_ == 0); }
 
 #endif

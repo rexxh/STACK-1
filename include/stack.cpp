@@ -2,10 +2,36 @@
 #define stack_cpp
 #pragma once
 #include <iostream>
-using namespace std;
+//using namespace std;
 
 template <typename T>
-class stack
+class allocator{
+protected:
+	allocator(size_t size = 0);
+	~allocator();
+	auto swap(allocator & other) -> void;
+	allocator(allocator const &) = delete;
+	auto operator =(allocator const &)->allocator & = delete;
+	T * ptr_;
+	size_t size_;
+	size_t count_;
+};
+
+template <typename T>
+allocator<T>::allocator(size_t size = 0) : ptr_((T*)(operator new(size*sizeof(T)))), size_(size), count_(0){};
+
+template<typename T>
+allocator<T>::~allocator(){ delete ptr_; }
+
+template<typename T>
+auto allocator<T>::swap(allocator & other)->void{
+	swap(ptr_, other.ptr_);
+	swap(size_, other.size_);
+	swao(count_, other.count_);
+}
+
+template <typename T>
+class stack : protected allocator<T>
 {
 public:
 	stack(); /* noexcept */
@@ -17,51 +43,46 @@ public:
 	void pop(); /* strong */
 	stack& operator=(const stack&); /* strong */
 	bool empty(); /* noexcept */
-private:
-	T * array_; 
-	size_t array_size_;
-	size_t count_;
 };
 
 template<typename T>
 T* copy_mas(const T *p1, size_t c, size_t s){
-	T *p2 = new T[s];
-	try{ copy(p1, p1 + c, p2); }
-	catch (...){ delete[] p2; throw; }
+	T *p2 = (T*)(operator new(s*sizeof(T)));
+	try{ std::copy(p1, p1 + c, p2); }
+	catch (...){ delete p2; throw; }
 	return p2;
 }
 
 template <typename T>
-stack<T>::stack() : array_(nullptr), array_size_(0), count_(0){};
+stack<T>::stack() : allocator<T>(){};
 
 template <typename T>
-stack<T>::stack(const stack& x) : array_size_(x.array_size_),
-count_(x.count_),
-array_(copy_mas(x.array_, x.count_, x.array_size_)){};
+stack<T>::stack(const stack& x) : allocator<T>(x.size_){
+	ptr_ = copy_mas(x.ptr_, x.count_, x.size_);
+	count_ = x.count_;
+};
 
 template <typename T>
-stack<T>::~stack(){
-	delete[] array_;
-}
+stack<T>::~stack(){}
 
 template <typename T>
 size_t stack<T>::count()const { return count_; }
 
 template <typename T>
 void stack<T>::push(T const &a){
-	if (count_ == array_size_){
-		T *p = copy_mas(array_, count_, array_size_ * 2 + (count_ == 0));
-		delete[] array_;
-		array_ = p;
-		array_size_ = array_size_ * 2 + (count_ == 0);
+	if (count_ == size_){
+		T *p = copy_mas(ptr_, count_, size_ * 2 + (count_ == 0));
+		delete ptr_;
+		ptr_ = p;
+		size_ = size_ * 2 + (count_ == 0);
 	}
-	array_[count_] = a;
+	ptr_[count_] = a;
 	++count_;
 }
 
 template <typename T>
 const T& stack<T>::top(){
-	if (count_ > 0) return array_[count_-1];
+	if (count_ > 0) return ptr_[count_ - 1];
 	else throw("stack pust");
 }
 
@@ -74,11 +95,11 @@ void stack<T>::pop(){
 template<typename T>
 stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
-		T *p = array_;
-		array_ = copy_mas(b.array_, b.count_, b.array_size_);
-		delete[] p;
+		T *p = ptr_;
+		ptr_ = copy_mas(b.ptr_, b.count_, b.size_);
+		delete p;
 		count_ = b.count_;
-		array_size_ = b.array_size_;
+		size_ = b.size_;
 	}
 	return *this;
 }

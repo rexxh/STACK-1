@@ -72,9 +72,9 @@ template <typename T>
 void stack<T>::push(T const &a){
 	if (allocator<T>::count_ == allocator<T>::size_){
 		T *p = copy_mas(allocator<T>::ptr_, allocator<T>::count_, allocator<T>::size_ * 2 + (allocator<T>::count_ == 0));
-		delete ptr_;
+		delete allocator<T>::ptr_;
 		allocator<T>::ptr_ = p;
-		allocator<T>::size_ = allocator<T>::size_ * 2 + (count_ == 0);
+		allocator<T>::size_ = allocator<T>::size_ * 2 + (allocator<T>::count_ == 0);
 	}
 	allocator<T>::ptr_[allocator<T>::count_] = a;
 	++allocator<T>::count_;

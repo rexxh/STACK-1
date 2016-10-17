@@ -44,7 +44,7 @@ template <typename T>
 allocator<T>::allocator(size_t size) : ptr_((T*)(operator new(size*sizeof(T)))), size_(size), count_(0){};
 
 template<typename T>
-allocator<T>::~allocator(){ destroy(ptr_,ptr_+count_); operator delete(ptr_); }
+allocator<T>::~allocator(){ destroy(ptr_,ptr_+size_); operator delete(ptr_); }
 
 template<typename T>
 auto allocator<T>::swap(allocator & other)->void{
@@ -74,7 +74,7 @@ public:
 T* copy_mas(const T *p1, size_t c, size_t s){
 	T *p2 = (T*)(operator new(s*sizeof(T)));
 	try{ std::copy(p1, p1 + c, p2); }
-	catch (...){ destroy(p2, p2 + c); operator delete(p2); throw; }
+	catch (...){ destroy(p2, p2 + s); operator delete(p2); throw; }
 	return p2;
 }*/
 
@@ -98,7 +98,7 @@ void stack<T>::push(T const &a){
 	if (allocator<T>::count_ == allocator<T>::size_){
 		T *p = (T*)(operator new(sizeof(T)*(allocator<T>::size_ * 2 + (allocator<T>::count_ == 0))));
 		for (size_t i = 0; i < allocator<T>::count_; i++) construct(p + i, allocator<T>::ptr_[i]);
-		destroy(allocator<T>::ptr_, allocator<T>::ptr_ + allocator<T>::count_);
+		destroy(allocator<T>::ptr_, allocator<T>::ptr_ + allocator<T>::size_);
 		operator delete(allocator<T>::ptr_);
 		allocator<T>::ptr_ = p;
 		allocator<T>::size_ = allocator<T>::size_ * 2 + (allocator<T>::count_ == 0);
@@ -124,7 +124,7 @@ stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
 		T *p=(T*)(operator new(sizeof(T)*b.size_));
 		for(size_t i = 0; i < b.count_; i++) construct(p+i, b.ptr_[i]);
-		destroy(allocator<T>::ptr_,allocator<T>::ptr_ + allocator<T>::count_);
+		destroy(allocator<T>::ptr_,allocator<T>::ptr_ + allocator<T>::size_);
 		operator delete(allocator<T>::ptr_);
 		allocator<T>::ptr_=p;
 		allocator<T>::count_ = b.count_;

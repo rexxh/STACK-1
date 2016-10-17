@@ -79,7 +79,7 @@ stack<T>::stack() : allocator<T>(){};
 
 template <typename T>
 stack<T>::stack(const stack& x) : allocator<T>(x.size_){
-	for (size_t i = 0; i < x.count_; i++) construct(allocator::ptr_ + i, x.ptr_[i]);
+	for (size_t i = 0; i < x.count_; i++) construct(allocator<T>::ptr_ + i, x.ptr_[i]);
 	allocator<T>::count_ = x.count_;
 };
 
@@ -119,7 +119,7 @@ template<typename T>
 stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
 		T *p = allocator<T>::ptr_;
-		for int(size_t i = 0; i < b.count_; i++) construct(ptr_+i, b.ptr_[i]);
+		for(size_t i = 0; i < b.count_; i++) construct(allocator<T>::ptr_+i, b.ptr_[i]);
 		destroy(p, p + allocator<T>::size_);
 		operator delete(p);
 		allocator<T>::count_ = b.count_;

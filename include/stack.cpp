@@ -98,8 +98,8 @@ void stack<T>::push(T const &a){
 	if (allocator<T>::count_ == allocator<T>::size_){
 		T *p = (T*)(operator new(sizeof(T)*(allocator<T>::size_ * 2 + (allocator<T>::count_ == 0))));
 		for (size_t i = 0; i < allocator<T>::count_; i++) construct(p + i, allocator<T>::ptr_[i]);
-		//destroy(allocator<T>::ptr_, allocator<T>::ptr_ + allocator<T>::count_);
-		//operator delete(allocator<T>::ptr_);
+		destroy(allocator<T>::ptr_, allocator<T>::ptr_ + allocator<T>::count_);
+		operator delete(allocator<T>::ptr_);
 		allocator<T>::ptr_ = p;
 		allocator<T>::size_ = allocator<T>::size_ * 2 + (allocator<T>::count_ == 0);
 	}

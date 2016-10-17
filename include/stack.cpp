@@ -122,7 +122,8 @@ void stack<T>::pop(){
 template<typename T>
 stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
-		T *p; for(size_t i = 0; i < b.count_; i++) construct(p+i, b.ptr_[i]);
+		T *p=(T*)(operator new(sizeof(T)*b.size_));
+		for(size_t i = 0; i < b.count_; i++) construct(p+i, b.ptr_[i]);
 		destroy(allocator<T>::ptr_,allocator<T>::ptr_ + allocator<T>::count_);
 		operator delete(allocator<T>::ptr_);
 		allocator<T>::ptr_=p;

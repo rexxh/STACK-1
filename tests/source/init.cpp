@@ -39,11 +39,11 @@ SCENARIO("cop", "[cop]"){
   REQUIRE(s2.top()==1);
 }
 
-SCENARIO("top", "[top]"){
+/*SCENARIO("top", "[top]"){
   stack<int> s;
   s.push(1);
   REQUIRE(s.top()==1);
-}
+}*/
 
 SCENARIO("empty", "[empty]"){
   stack<int> s1, s2;

@@ -31,7 +31,7 @@ template <typename T>
 class allocator{
 protected:
 	allocator(size_t size = 0);
-	//~allocator();
+	~allocator();
 	auto swap(allocator & other) -> void;
 	allocator(allocator const &) = delete;
 	auto operator =(allocator const &)->allocator & = delete;
@@ -43,8 +43,8 @@ protected:
 template <typename T>
 allocator<T>::allocator(size_t size) : ptr_((T*)(operator new(size*sizeof(T)))), size_(size), count_(0){};
 
-//template<typename T>
-//allocator<T>::~allocator(){ destroy(ptr_,ptr_+size_); operator delete(ptr_); }
+template<typename T>
+allocator<T>::~allocator(){ destroy(ptr_,ptr_+count_); operator delete(ptr_); }
 
 template<typename T>
 auto allocator<T>::swap(allocator & other)->void{

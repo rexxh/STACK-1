@@ -4,6 +4,29 @@
 #include <iostream>
 //using namespace std;
 
+
+
+template <typename T1, typename T2>
+void construct(T1 * ptr, T2 const & value) {
+	new(ptr)T1(value);
+}
+
+template <typename T>
+void destroy(T * ptr) noexcept
+{
+	ptr->~T();
+}
+
+template <typename FwdIter>
+void destroy(FwdIter first, FwdIter last) noexcept
+{
+	for (; first != last; ++first) {
+		destroy(&*first);
+	}
+}
+
+
+
 template <typename T>
 class allocator{
 protected:
@@ -28,25 +51,6 @@ auto allocator<T>::swap(allocator & other)->void{
 	swap(ptr_, other.ptr_);
 	swap(size_, other.size_);
 	swao(count_, other.count_);
-}
-
-template <typename T1, typename T2>
-void construct(T1 * ptr, T2 const & value) {
-	new(ptr)T1(value);
-}
-
-template <typename T>
-void destroy(T * ptr) noexcept
-{
-	ptr->~T();
-}
-
-template <typename FwdIter>
-void destroy(FwdIter first, FwdIter last) noexcept
-{
-	for (; first != last; ++first) {
-		destroy(&*first);
-	}
 }
 
 

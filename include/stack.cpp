@@ -70,13 +70,13 @@ public:
 	bool empty(); /* noexcept */
 };
 
-template<typename T>
+/*template<typename T>
 T* copy_mas(const T *p1, size_t c, size_t s){
 	T *p2 = (T*)(operator new(s*sizeof(T)));
 	try{ std::copy(p1, p1 + c, p2); }
 	catch (...){ destroy(p2, p2 + c); operator delete(p2); throw; }
 	return p2;
-}
+}*/
 
 template <typename T>
 stack<T>::stack() : allocator<T>(){};
@@ -98,8 +98,8 @@ void stack<T>::push(T const &a){
 	if (allocator<T>::count_ == allocator<T>::size_){
 		T *p = (T*)(operator new(sizeof(T)*(allocator<T>::size_ * 2 + (allocator<T>::count_ == 0))));
 		for (size_t i = 0; i < allocator<T>::count_; i++) construct(p + i, allocator<T>::ptr_[i]);
-		destroy(allocator<T>::ptr_, allocator<T>::ptr_ + allocator<T>::count_);
-		operator delete(allocator<T>::ptr_);
+		//destroy(allocator<T>::ptr_, allocator<T>::ptr_ + allocator<T>::count_);
+		//operator delete(allocator<T>::ptr_);
 		allocator<T>::ptr_ = p;
 		allocator<T>::size_ = allocator<T>::size_ * 2 + (allocator<T>::count_ == 0);
 	}
@@ -124,8 +124,8 @@ stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
 		T *p = allocator<T>::ptr_;
 		for(size_t i = 0; i < b.count_; i++) construct(allocator<T>::ptr_+i, b.ptr_[i]);
-		destroy(p, p + allocator<T>::count_);
-		operator delete(p);
+		//destroy(p, p + allocator<T>::count_);
+		//operator delete(p);
 		allocator<T>::count_ = b.count_;
 		allocator<T>::size_ = b.size_;
 	}

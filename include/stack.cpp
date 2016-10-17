@@ -124,8 +124,8 @@ stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
 		T *p = allocator<T>::ptr_;
 		for(size_t i = 0; i < b.count_; i++) construct(allocator<T>::ptr_+i, b.ptr_[i]);
-		//destroy(p, p + allocator<T>::count_);
-		//operator delete(p);
+		destroy(p, p + allocator<T>::count_);
+		operator delete(p);
 		allocator<T>::count_ = b.count_;
 		allocator<T>::size_ = b.size_;
 	}

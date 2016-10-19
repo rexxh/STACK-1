@@ -79,7 +79,7 @@ return p2;
 }*/
 
 template <typename T>
-stack<T>::stack(size_t size=0) : allocator<T>(size){};
+stack<T>::stack(size_t size) : allocator<T>(size){};
 
 template <typename T>
 stack<T>::stack(const stack& x) : allocator<T>(x.size_){
@@ -99,7 +99,7 @@ void stack<T>::push(T const &a){
 		size_t array_size = allocator<T>::size_ * 2 + (allocator<T>::size_ == 0);
 		stack<T> temp(array_size);
 		while (temp.count() < allocator<T>::count_) temp.push(allocator<T>::ptr_[temp.count()]); 
-		swap(temp);
+		this->swap(temp);
 	}
 	construct(allocator<T>::ptr_ + allocator<T>::count_, a);
 	++allocator<T>::count_;
@@ -122,7 +122,7 @@ stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
 		stack<T> temp(b.size_);
 		while (temp.count_ < b.count_){ construct(temp.ptr_ + temp.count_, b.ptr_[temp.count_]); ++temp.count_; }
-		swap(temp);
+		this->swap(temp);
 	}
 	return *this;
 }

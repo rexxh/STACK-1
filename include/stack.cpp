@@ -120,7 +120,7 @@ void stack<T>::pop(){
 template<typename T>
 stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
-		stack<T> temp(b)
+		stack<T> temp(b);
 		this->swap(temp);
 	}
 	return *this;

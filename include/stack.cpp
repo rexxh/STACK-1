@@ -12,7 +12,7 @@ void construct(T1 * ptr, T2 const & value) {
 }
 
 template <typename T>
-void destroy(T * ptr) noexcept
+void destroy(T * ptr) noexcept 
 {
 	ptr->~T();
 }

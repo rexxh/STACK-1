@@ -64,10 +64,10 @@ public:
 	~stack(); /* noexcept */
 	size_t count() const; /* noexcept */
 	void push(T const &); /* strong */
-	const T& top(); /* strong */
+	const T& top() const; /* strong */
 	void pop(); /* strong */
 	stack& operator=(const stack&); /* strong */
-	bool empty(); /* noexcept */
+	bool empty() const; /* noexcept */
 };
 
 /*template<typename T>
@@ -106,7 +106,7 @@ void stack<T>::push(T const &a){
 }
 
 template <typename T>
-const T& stack<T>::top(){
+const T& stack<T>::top()const{
 	if (allocator<T>::count_ > 0) return allocator<T>::ptr_[allocator<T>::count_ - 1];
 	else throw("stack pust");
 }
@@ -120,14 +120,13 @@ void stack<T>::pop(){
 template<typename T>
 stack<T>& stack<T>::operator=(const stack& b){
 	if (this != &b){
-		stack<T> temp(b.size_);
-		while (temp.count_ < b.count_){ construct(temp.ptr_ + temp.count_, b.ptr_[temp.count_]); ++temp.count_; }
+		stack<T> temp(b)
 		this->swap(temp);
 	}
 	return *this;
 }
 
 template<typename T>
-bool stack<T>::empty(){ return(allocator<T>::count_ == 0); }
+bool stack<T>::empty() const { return(allocator<T>::count_ == 0); }
 
 #endif

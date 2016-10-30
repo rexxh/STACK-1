@@ -4,13 +4,13 @@
 #include <iostream>
 #include <memory>
 
-/*template<typename T>
-T* copy_mas(const T *p1, size_t c, size_t s){
-	T *p2 = new T[s];
-	try{ std::copy(p1, p1 + c, p2); }
-	catch (...){ delete[] p2; throw; }
-	return p2;
-}*/
+//template<typename T>
+//T* copy_mas(const T *p1, size_t c, size_t s){
+//	T *p2 = new T[s];
+//	try{ std::copy(p1, p1 + c, p2); }
+//	catch (...){ delete[] p2; throw; }
+//	return p2;
+//}
 
 
 
@@ -28,11 +28,10 @@ public:
 
 	auto set(size_t index) /*strong*/ -> void;
 	auto reset(size_t index) /*strong*/ -> void;
-	auto test(size_t index) const /*strong*/ -> bool;
+	auto test(size_t index) /*strong*/ -> bool;
 
 	auto size() /*noexcept*/ -> size_t;
 	auto counter() /*noexcept*/ -> size_t;
-
 private:
 	std::unique_ptr<bool[]>  ptr_;
 	size_t size_;
@@ -45,7 +44,7 @@ auto bitset::set(size_t index)->void { if (index >= 0 && index < size_) { ptr_[i
 
 auto bitset::reset(size_t index)->void { if (index >= 0 && index < size_) { ptr_[index] = false; --counter_; } else throw; }
 
-auto bitset::test(size_t index)const->bool { if (index >= 0 && index < size_) return !ptr_[index]; else throw; }
+auto bitset::test(size_t index)->bool { if (index >= 0 && index < size_) return !ptr_[index]; else throw; }
 
 auto bitset::size()->size_t{ return size_; }
 
@@ -61,7 +60,7 @@ public:
 	allocator(std::size_t size = 0) /*strong*/;
 	allocator(allocator const & other) /*strong*/;
 	auto operator =(allocator const & other)->allocator & = delete;
-	~allocator();
+	//~allocator();
 
 	auto resize() /*strong*/ -> void;
 
@@ -74,6 +73,7 @@ public:
 	auto count() const /*noexcept*/ -> size_t;
 	auto full() const /*noexcept*/ -> bool;
 	auto empty() const /*noexcept*/ -> bool;
+	//void print(){ for (size_t i = 0; i < size_; i++) std::cout << *(get() + i)<<std::endl; }
 private:
 	auto destroy(T * first, T * last) /*noexcept*/ -> void;
 	auto swap(allocator & other) /*noexcept*/ -> void;
@@ -87,18 +87,17 @@ template<typename T>
 allocator<T>::allocator(size_t size) : ptr_((T*)operator new(size)), size_(size), map_(std::make_unique<bitset>(size)){}
 
 template<typename T>
-allocator<T>::allocator(allocator const& other) : ptr_(static_cast<T*>(operator new(other.size_))), size_(other.size_), map_(std::make_unique<bitset>(size_)){
-	for (size_t i; i < size_; i++) construct(ptr_ + i, other.ptr_[i]); 
+allocator<T>::allocator(allocator const& other) : ptr_((T*)(operator new(other.size_))), size_(other.size_), map_(std::make_unique<bitset>(size_)){
+	for (size_t i=0; i < size_; i++) construct(ptr_ + i, other.ptr_[i]); 
 }
 
-template<typename T>
-allocator<T>::~allocator(){ operator delete(ptr_); }
+//template<typename T>
+//allocator<T>::~allocator(){ std::cout << "!!!" << ptr_ << "!!!" << std::endl; operator delete(ptr_); }
 
 template<typename T>
 auto allocator<T>::resize()->void{
-	std::cout <<"resize"<< size_;
 	allocator<T> al(size_ * 2 + (size_ == 0));
-	for (size_t i = 0; i < size_; i++) construct(al.ptr_ + i, ptr_[i]);
+	for (size_t i = 0; i < size_; i++) al.construct(al.get() + i, ptr_[i]);
 	this->swap(al);
 }
 
@@ -108,7 +107,7 @@ auto allocator<T>::construct(T * ptr, T const & value)->void{
 		new(ptr)T(value);
 		map_->set(ptr - ptr_);
 	}
-	else throw("error");
+	else { throw("error"); }
 }
 
 template<typename T>
@@ -150,7 +149,7 @@ class stack {
 public:
 	explicit
 	stack(size_t size = 0);
-	//auto operator =(stack const & other) /*strong*/ -> stack &;
+	auto operator =(stack const & other) /*strong*/ -> stack &;
 
 	auto empty() const /*noexcept*/ -> bool;
 	auto count() const /*noexcept*/ -> size_t;
@@ -169,11 +168,16 @@ private:
 template<typename T>
 stack<T>::stack(size_t size) : allocator_(size){}
 
-//template<typename T>
-//auto stack<T>::operator =(stack const & other)-> stack &{ }
+template<typename T>
+auto stack<T>::operator =(stack const & other)-> stack &{ 
+	if (this != &other) {
+		for (size_t i = 0; i < other.count(); i++) allocator_.construct(allocator_.get() + i, *(other.allocator_.get() + i));
+	}
+	return *this;
+}
 
 template<typename T>
-auto stack<T>::empty() const ->bool{ return allocator_.empty(); }
+auto stack<T>::empty() const ->bool{ return allocator.empty(); }
 
 template<typename T>
 auto stack<T>::count()const->size_t{ return allocator_.count(); }
@@ -186,7 +190,7 @@ auto stack<T>::push(T const & value)->void{
 
 template<typename T>
 auto stack<T>::pop()->void{
-	if (this->count() > 0) allocator_.destroy(allocator_.get() + this->count());
+	if (this->count() > 0) allocator_.destroy(allocator_.get() + (this->count()-1));
 	else this->throw_is_empty();
 }
 

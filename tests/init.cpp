@@ -4,7 +4,7 @@
 using namespace std;
 
 SCENARIO("count", "[count]"){
-  stack<int> s();
+  stack<int> s;
   s.push(1);
   REQUIRE(s.count()==1);
 }

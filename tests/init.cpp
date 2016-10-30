@@ -4,7 +4,7 @@
 using namespace std;
 
 SCENARIO("count", "[count]"){
-  stack<int> s;
+  stack<int> s();
   s.push(1);
   REQUIRE(s.count()==1);
 }
@@ -22,22 +22,22 @@ SCENARIO("pop", "[pop]"){
   REQUIRE(s.count()==0);
 }
 
-SCENARIO("prisv", "[prisv]"){
+/*SCENARIO("prisv", "[prisv]"){
   stack<int> s;
   s.push(1);
   stack<int> s2;
   s2=s;
   REQUIRE(s.count()==1);
   REQUIRE(s.top()==1);
-}
+}*/
 
-SCENARIO("cop", "[cop]"){
+/*SCENARIO("cop", "[cop]"){
   stack<int> s;
   s.push(1);
   stack<int> s2=s;
   REQUIRE(s2.count()==1);
   REQUIRE(s2.top()==1);
-}
+}*/
 
 SCENARIO("top", "[top]"){
   stack<int> s;

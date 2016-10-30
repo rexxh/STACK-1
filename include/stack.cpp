@@ -4,13 +4,13 @@
 #include <iostream>
 #include <memory>
 
-template<typename T>
+/*template<typename T>
 T* copy_mas(const T *p1, size_t c, size_t s){
 	T *p2 = new T[s];
 	try{ std::copy(p1, p1 + c, p2); }
 	catch (...){ delete[] p2; throw; }
 	return p2;
-}
+}*/
 
 
 

@@ -87,7 +87,7 @@ template<typename T>
 allocator<T>::allocator(size_t size) : ptr_((T*)operator new(size)), size_(size), map_(std::make_unique<bitset>(size)){}
 
 template<typename T>
-allocator<T>::allocator(allocator const& other) : ptr_(T*)(operator new(other.size)), size_(other.size), map_(std::make_unique<bitset>(size)){
+allocator<T>::allocator(allocator const& other) : ptr_(static_cast<T*>(operator new(other.size)), size_(other.size), map_(std::make_unique<bitset>(size)){
 	for (size_t i; i < size_; i++) construct(ptr_ + i, other.ptr_[i]); 
 }
 
@@ -170,10 +170,10 @@ template<typename T>
 stack<T>::stack(size_t size) : allocator_(size){}
 
 template<typename T>
-auto stack<T>::operator =(stack const & other)-> stack &{ allocator_(other.allocator); }
+auto stack<T>::operator =(stack const & other)-> stack &{ allocator_(other.allocator_); }
 
 template<typename T>
-auto stack<T>::empty() const ->bool{ return allocator.empty(); }
+auto stack<T>::empty() const ->bool{ return allocator_.empty(); }
 
 template<typename T>
 auto stack<T>::count()const->size_t{ return allocator_.count(); }

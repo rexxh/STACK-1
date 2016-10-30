@@ -167,7 +167,7 @@ stack<T>::stack(size_t size) : allocator_(size){}
 template<typename T>
 auto stack<T>::operator =(stack const & other)-> stack &{ 
 	if (this != &other) {
-		for (size_t i = 0; i < other.count(); i++) allocator_.construct(allocator_.get() + i, *(other.allocator_.get() + i));
+		for (size_t i = 0; i < other.count(); i++) this->push(*(other.allocator_.get()+i));
 	}
 	return *this;
 }

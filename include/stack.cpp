@@ -60,7 +60,7 @@ public:
 	allocator(std::size_t size = 0) /*strong*/;
 	allocator(allocator const & other) /*strong*/;
 	auto operator =(allocator const & other)->allocator & = delete;
-	//~allocator();
+	~allocator()=default;
 
 	auto resize() /*strong*/ -> void;
 
@@ -73,7 +73,6 @@ public:
 	auto count() const /*noexcept*/ -> size_t;
 	auto full() const /*noexcept*/ -> bool;
 	auto empty() const /*noexcept*/ -> bool;
-	//void print(){ for (size_t i = 0; i < size_; i++) std::cout << *(get() + i)<<std::endl; }
 private:
 	auto destroy(T * first, T * last) /*noexcept*/ -> void;
 	auto swap(allocator & other) /*noexcept*/ -> void;
@@ -90,9 +89,6 @@ template<typename T>
 allocator<T>::allocator(allocator const& other) : ptr_((T*)(operator new(other.size_))), size_(other.size_), map_(std::make_unique<bitset>(size_)){
 	for (size_t i=0; i < size_; i++) construct(ptr_ + i, other.ptr_[i]); 
 }
-
-//template<typename T>
-//allocator<T>::~allocator(){ std::cout << "!!!" << ptr_ << "!!!" << std::endl; operator delete(ptr_); }
 
 template<typename T>
 auto allocator<T>::resize()->void{

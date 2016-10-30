@@ -177,7 +177,7 @@ auto stack<T>::operator =(stack const & other)-> stack &{
 }
 
 template<typename T>
-auto stack<T>::empty() const ->bool{ return allocator.empty(); }
+auto stack<T>::empty() const ->bool{ return allocator_.empty(); }
 
 template<typename T>
 auto stack<T>::count()const->size_t{ return allocator_.count(); }

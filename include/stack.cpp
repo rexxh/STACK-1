@@ -83,7 +83,7 @@ allocator<T>::allocator(allocator const& other) : allocator<T>(other.size_){
 template<typename T>
 auto allocator<T>::resize()->void{
 	allocator<T> al(size_ * 2 + (size_ == 0));
-	for (size_t i = 0; i < size_; i++) if(map_->test(prt-ptr_)) al.construct(al.get() + i, ptr_[i]);
+	for (size_t i = 0; i < size_; i++) if(map_->test(i)) al.construct(al.get() + i, ptr_[i]);
 	this->swap(al);
 }
 

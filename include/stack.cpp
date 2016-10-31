@@ -45,12 +45,11 @@ auto bitset::counter()->size_t{ return counter_; }
 template <typename T>
 class allocator{
 public:
-public:
 	explicit
 	allocator(std::size_t size = 0) /*strong*/;
 	allocator(allocator const & other) /*strong*/;
 	auto operator =(allocator const & other)->allocator & = delete;
-	~allocator()=default;
+	~allocator();
 
 	auto resize() /*strong*/ -> void;
 
@@ -73,11 +72,19 @@ private:
 };
 
 template<typename T>
-allocator<T>::allocator(size_t size) : ptr_((T*)operator new(size*sizeof(T))), size_(size), map_(std::make_unique<bitset>(size)){}
+allocator<T>::allocator(size_t size) : ptr_((T*)operator new(size*sizeof(T))), size_(size), map_(std::make_unique<bitset>(size)) {}
 
 template<typename T>
-allocator<T>::allocator(allocator const& other) : allocator<T>(other.size_){
+allocator<T>::allocator(allocator const& other) : allocator<T>(other.size_) {
 	for (size_t i=0; i < size_; i++) construct(ptr_ + i, other.ptr_[i]); 
+}
+
+template<typename T>
+allocator<T>::~allocator(){
+	if (this->count() > 0) {
+		destroy(ptr_, ptr_ + size_);
+	}
+	operator delete(prt_);
 }
 
 template<typename T>

@@ -97,7 +97,7 @@ auto allocator<T>::construct(T * ptr, T const & value)->void{
 }
 
 template<typename T>
-auto allocator<T>::destroy(T* ptr)->void{ if (!map_->test()){ptr->~T(); map_->reset(ptr - ptr_); }}
+auto allocator<T>::destroy(T* ptr)->void{ if (!map_->test(ptr-ptr_)){ptr->~T(); map_->reset(ptr - ptr_); }}
 
 template<typename T>
 auto allocator<T>::get()-> T* { return ptr_; }

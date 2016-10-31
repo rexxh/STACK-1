@@ -84,7 +84,7 @@ allocator<T>::~allocator(){
 	if (this->count() > 0) {
 		destroy(ptr_, ptr_ + size_);
 	}
-	operator delete(prt_);
+	operator delete(ptr_);
 }
 
 template<typename T>

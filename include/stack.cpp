@@ -157,7 +157,7 @@ stack<T>::stack(size_t size) : allocator_(size){}
 template<typename T>
 auto stack<T>::operator =(stack const & other)-> stack &{ 
 	if (this != &other) {
-		this->allocator_.swap(allocator<T>(other.allocator_))
+		allocator_.swap(allocator<T>(other.allocator_));
 	}
 	return *this;
 }

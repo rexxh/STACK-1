@@ -30,11 +30,20 @@ private:
 
 bitset::bitset(size_t size) : ptr_(std::make_unique<bool[]>(size)), size_(size), counter_(0){}
 
-auto bitset::set(size_t index)->void { if (index >= 0 && index < size_) { ptr_[index] = true; ++counter_; } else throw("bad_index"); }
+auto bitset::set(size_t index)->void { 
+	if (index >= 0 && index < size_) { ptr_[index] = true; ++counter_; }
+	else throw("bad_index");
+}
 
-auto bitset::reset(size_t index)->void { if (index >= 0 && index < size_) { ptr_[index] = false; --counter_; } else throw("bad_index"); }
+auto bitset::reset(size_t index)->void { 
+	if (index >= 0 && index < size_) { ptr_[index] = false; --counter_; } 
+	else throw("bad_index"); 
+}
 
-auto bitset::test(size_t index)->bool { if (index >= 0 && index < size_) return !ptr_[index]; else throw("bad_index"); }
+auto bitset::test(size_t index)->bool { 
+	if (index >= 0 && index < size_) return !ptr_[index]; 
+	else throw("bad_index"); 
+}
 
 auto bitset::size()->size_t{ return size_; }
 
@@ -90,7 +99,7 @@ allocator<T>::~allocator(){
 template<typename T>
 auto allocator<T>::resize()->void{
 	allocator<T> al(size_ * 2 + (size_ == 0));
-	for (size_t i = 0; i < size_; i++) if(map_->test(i)) al.construct(al.get() + i, ptr_[i]);
+	for (size_t i = 0; i < size_; ++i) if(map_->test(i)) al.construct(al.get() + i, ptr_[i]);
 	this->swap(al);
 }
 
@@ -104,7 +113,9 @@ auto allocator<T>::construct(T * ptr, T const & value)->void{
 }
 
 template<typename T>
-auto allocator<T>::destroy(T* ptr)->void{ if (!map_->test(ptr-ptr_)){ptr->~T(); map_->reset(ptr - ptr_); }}
+auto allocator<T>::destroy(T* ptr)->void{ if (!map_->test(ptr-ptr_)&&ptr>=ptr_&&ptr<=ptr_+this->count())
+	{ptr->~T(); map_->reset(ptr - ptr_); }
+}
 
 template<typename T>
 auto allocator<T>::get()-> T* { return ptr_; }
@@ -123,7 +134,8 @@ auto allocator<T>::empty() const -> bool { return (map_->counter() == 0); }
 
 template<typename T>
 auto allocator<T>::destroy(T * first, T * last)->void{
-	if(first>=ptr_&&last<=ptr_+this->count())for (; first != last; ++first) {
+	if(first>=ptr_&&last<=ptr_+this->count())
+		for (; first != last; ++first) {
 		destroy(&*first);
 	}
 }
@@ -155,7 +167,7 @@ public:
 private:
 	allocator<T> allocator_;
 
-	auto throw_is_empty() const -> void;
+	auto throw_is_empty()/*strong*/ const -> void;
 };
 
 template<typename T>

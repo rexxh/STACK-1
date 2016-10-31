@@ -73,7 +73,7 @@ private:
 };
 
 template<typename T>
-allocator<T>::allocator(size_t size) : ptr_((T*)operator new(size)), size_(size), map_(std::make_unique<bitset>(size)){}
+allocator<T>::allocator(size_t size) : ptr_((T*)operator new(size*sizeof(T))), size_(size), map_(std::make_unique<bitset>(size)){}
 
 template<typename T>
 allocator<T>::allocator(allocator const& other) : ptr_((T*)(operator new(other.size_))), size_(other.size_), map_(std::make_unique<bitset>(size_)){
@@ -97,7 +97,7 @@ auto allocator<T>::construct(T * ptr, T const & value)->void{
 }
 
 template<typename T>
-auto allocator<T>::destroy(T* ptr)->void{ ptr->~T(); map_->reset(ptr - ptr_); }
+auto allocator<T>::destroy(T* ptr)->void{ if (!map_->test()){ptr->~T(); map_->reset(ptr - ptr_); }}
 
 template<typename T>
 auto allocator<T>::get()-> T* { return ptr_; }
@@ -193,6 +193,6 @@ auto stack<T>::top()const->T const & {
 }
 
 template<typename T>
-auto stack<T>::throw_is_empty()const->void{ std::cout << "EMPTY." << std::endl; }
+auto stack<T>::throw_is_empty()const->void{ throw("empty");}
 
 #endif

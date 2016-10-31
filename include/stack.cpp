@@ -123,7 +123,7 @@ auto allocator<T>::empty() const -> bool { return (map_->counter() == 0); }
 
 template<typename T>
 auto allocator<T>::destroy(T * first, T * last)->void{
-	for (; first != last; ++first) {
+	if(first>=prt_&&last<=ptr_+this->count())for (; first != last; ++first) {
 		destroy(&*first);
 	}
 }
@@ -164,7 +164,7 @@ stack<T>::stack(size_t size) : allocator_(size){}
 template<typename T>
 auto stack<T>::operator =(stack const & other)-> stack &{ 
 	if (this != &other) {
-		(allocator<T>(other.allocator_)).swap(allocator_);
+		(allocator(other.allocator_)).swap(allocator_);
 	}
 	return *this;
 }

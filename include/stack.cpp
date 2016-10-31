@@ -63,9 +63,9 @@ public:
 	auto count() const /*noexcept*/ -> size_t;
 	auto full() const /*noexcept*/ -> bool;
 	auto empty() const /*noexcept*/ -> bool;
+	auto swap(allocator & other) /*noexcept*/ -> void;
 private:
 	auto destroy(T * first, T * last) /*noexcept*/ -> void;
-	auto swap(allocator & other) /*noexcept*/ -> void;
 
 	T * ptr_;
 	size_t size_;
@@ -157,8 +157,7 @@ stack<T>::stack(size_t size) : allocator_(size){}
 template<typename T>
 auto stack<T>::operator =(stack const & other)-> stack &{ 
 	if (this != &other) {
-for(size_t i=0; i<this->count(); i++) this->pop();
-		for (size_t i = 0; i < other.count(); i++) this->push(*(other.allocator_.get()+i));
+		this->allocator_.swap(allocator<T>(other.allocator_))
 	}
 	return *this;
 }
